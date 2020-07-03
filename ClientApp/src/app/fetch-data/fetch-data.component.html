@@ -1,0 +1,75 @@
+<h1 id="tableLabel">Weather forecast</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!persons"><em>Loading...</em></p>
+<p *ngIf="!inspectionPlans"><em>Loading...</em></p>
+<p *ngIf="!equipments"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="persons">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Surname</th>
+      <th>PhoneNumber</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let person of persons">
+      <td>{{ person.name }}</td>
+      <td>{{ person.surname }}</td>
+      <td>{{ person.phoneNumber }}</td>
+      <td>{{ person.email }}</td>
+    </tr>
+  </tbody>
+</table>
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="inspectionPlans">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>Temperature</th>
+      <th>Humidity</th>
+      <th>Pressure</th>
+      <th>Person</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let inspectionPlan of inspectionPlans">
+      <td>{{ inspectionPlan.description }}</td>
+      <td>{{ inspectionPlan.temperature }}</td>
+      <td>{{ inspectionPlan.humidity }}</td>
+      <td>{{ inspectionPlan.pressure }}</td>
+      <td>{{ inspectionPlan.person }}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="equipments">
+  <thead>
+    <tr>
+      <th>Description</th>
+      <th>EquipementType</th>
+      <th>Model</th>
+      <th>SerialNumber</th>
+      <th>PersonId</th>
+      <th>Person</th>
+      <th>InspectionPlanId</th>
+      <th>InspectionPlan</th>
+      <th>CalibrationDate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let equipment of equipments">
+      <td>{{ equipment.description }}</td>
+      <td>{{ equipment.equipementType }}</td>
+      <td>{{ equipment.model }}</td>
+      <td>{{ equipment.serialNumber }}</td>
+      <td>{{ equipment.personId }}</td>
+      <td>{{ equipment.person }}</td>
+      <td>{{ equipment.inspectionPlanId }}</td>
+      <td>{{ equipment.inspectionPlan }}</td>
+      <td>{{ equipment.calibrationDate }}</td>
+    </tr>
+  </tbody>
+</table>
