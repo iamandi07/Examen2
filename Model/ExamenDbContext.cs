@@ -1,4 +1,5 @@
 ﻿using Examen2.Model;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Examen2
 {
-    public class ExamenDbContext : DbContext
+    public class ExamenDbContext : IdentityDbContext
     {
 
         public DbSet<Person> Persons { get; set; }

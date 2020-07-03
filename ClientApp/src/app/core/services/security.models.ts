@@ -6,7 +6,6 @@ export interface LoginModel {
 export interface RegisterModel {
   email: string;
   password: string;
-  password1: string;
 }
 
 export interface Token {

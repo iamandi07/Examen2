@@ -19,6 +19,11 @@ using Microsoft.OpenApi.Models;
 using System.IO;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Examen2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace Examen2
 {
@@ -31,11 +36,26 @@ namespace Examen2
 
         public IConfiguration Configuration { get; }
 
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetValue<string>("Authentication:Issuer"),
+                        ValidAudience = Configuration.GetValue<string>("Authentication:Issuer"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("Authentication:Secret"))),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
+ //           services.AddScoped<IUserService, UserService>();
             services.AddControllers()
             .AddJsonOptions(options =>
             {
@@ -55,21 +75,17 @@ namespace Examen2
                 configuration.RootPath = "ClientApp/";
             });
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  builder =>
-                                  {
-                                      /*builder.WithOrigins("http://localhost:4200/")
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod()
-                                      .AllowAnyOrigin();*/
+            services.AddIdentity<IdentityUser, IdentityRole>()
+               .AddDefaultTokenProviders()
+               .AddEntityFrameworkStores<ExamenDbContext>();
 
-                                      builder.AllowAnyOrigin()
-                                      .AllowAnyHeader()
-                                      .AllowAnyMethod();
-                                  });
-            });
+            services
+                .AddMvc(options =>
+                {
+                   
+                    options.EnableEndpointRouting = false;
+
+                });
 
         }
 
@@ -103,7 +119,12 @@ namespace Examen2
 
             app.UseSpaStaticFiles();
 
-            app.UseCors(MyAllowSpecificOrigins);
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
 
             app.UseSpa(spa =>
             {
@@ -115,8 +136,11 @@ namespace Examen2
                 if (env.IsDevelopment())
                 {
                     spa.UseAngularCliServer(npmScript: "start");
-                }
+                } 
             });
+            app.UseAuthentication();
+            
+
         }
     }
 }
