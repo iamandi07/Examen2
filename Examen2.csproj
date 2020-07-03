@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ClientApp\node_modules\**" />
+    <Content Remove="ClientApp\node_modules\**" />
+    <EmbeddedResource Remove="ClientApp\node_modules\**" />
+    <None Remove="ClientApp\node_modules\**" />
+    <TypeScriptCompile Remove="ClientApp\node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20200702232212_Person.cs" />
     <Compile Remove="Migrations\20200702232212_Person.Designer.cs" />
     <Compile Remove="Migrations\20200702233239_Person.cs" />
